@@ -1,4 +1,6 @@
-package com.example.seekbartest;
+package com.example.seekbartest.Activity;
+
+import com.example.seekbartest.R;
 
 import android.support.v4.app.Fragment;
 import android.text.SpannableStringBuilder;
@@ -29,7 +31,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.mAct = this;
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.act_main);
 		init();
 	}
 
@@ -48,14 +50,14 @@ public class MainActivity extends Activity {
 							.show();
 				}
 			}
-
-			public String getTextFromEditText(EditText edit) {
-				SpannableStringBuilder sb = (SpannableStringBuilder) edit
-						.getText();
-				return sb.toString();
-			}
 		});
 
+	}
+	
+	public String getTextFromEditText(EditText edit) {
+		SpannableStringBuilder sb = (SpannableStringBuilder) edit
+				.getText();
+		return sb.toString();
 	}
 
 	private void init() {
