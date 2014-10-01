@@ -1,8 +1,6 @@
 package com.example.seekbartest.Activity;
 
 import com.example.seekbartest.R;
-import com.example.seekbartest.R.id;
-import com.example.seekbartest.R.layout;
 import com.example.seekbartest.Fragment.QuestionTextFragment;
 import com.example.seekbartest.Fragment.SeekbarFragment;
 
@@ -14,9 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.Toast;
 
 public class SeekbarActivity extends FragmentActivity {
@@ -61,12 +57,13 @@ public class SeekbarActivity extends FragmentActivity {
 		Bundle qtBundle = new Bundle();
 		//TODO きちんと値を取得する事
 		qtBundle.putString("question", "test");
+		qtf.setArguments(qtBundle);
 		
 		/*SeekbarFragmentを設定*/
 		SeekbarFragment sbf = new SeekbarFragment();
 		Bundle sbBundle = new Bundle();
 		//TODO きちんと値を取得する事
-		sbBundle.putInt("seekbarValue", 50);
+		sbBundle.putInt("seekbarValue", 100);
 		sbf.setArguments(sbBundle);
 		
 		// Fragment をスタックに追加する
@@ -92,7 +89,7 @@ public class SeekbarActivity extends FragmentActivity {
 		FragmentTransaction ft = manager.beginTransaction();
 
 		if (fragmentName.equals("QuestionTextFragment")) {
-			/* StoryBackgroundFragmentの場合 */
+			/* QuestionTextFragmentの場合 */
 			// Layout位置先の指定
 			ft.replace(mTextLayout.getId(), fragment);
 		} else if (fragmentName.equals("SeekbarFragment")) {
@@ -110,5 +107,23 @@ public class SeekbarActivity extends FragmentActivity {
 		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 		ft.addToBackStack(null);
 		ft.commit();
+	}
+	
+	public void nextQuestion(){
+		/*QuestionTextFragmentを設定*/
+		QuestionTextFragment qtf = new QuestionTextFragment();
+		Bundle qtBundle = new Bundle();
+		//TODO きちんと値を取得する事
+		qtBundle.putString("question", "testtest");
+		qtf.setArguments(qtBundle);
+		replaceFragmentToStack(qtf);
+		
+		/*SeekbarFragmentを設定*/
+		SeekbarFragment sbf = new SeekbarFragment();
+		Bundle sbBundle = new Bundle();
+		//TODO きちんと値を取得する事
+		sbBundle.putInt("seekbarValue", 0);
+		sbf.setArguments(sbBundle);
+		replaceFragmentToStack(sbf);
 	}
 }
