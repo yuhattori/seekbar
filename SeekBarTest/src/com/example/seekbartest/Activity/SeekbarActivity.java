@@ -170,8 +170,6 @@ public class SeekbarActivity extends FragmentActivity {
 	public void nextQuestion() {
 		if (mNow != mCSVdata.size() - 1) {
 			// 再終行以外の場合
-
-			// pageを一つ増やす
 			mNow++;
 
 			/* QuestionTextFragmentを設定 */
@@ -190,8 +188,6 @@ public class SeekbarActivity extends FragmentActivity {
 	public void beforeQuestion() {
 		if (mNow != 0) {
 			// 最初の行以外の場合
-
-			// pageを一つ増やす
 			mNow--;
 
 			/* QuestionTextFragmentを設定 */
