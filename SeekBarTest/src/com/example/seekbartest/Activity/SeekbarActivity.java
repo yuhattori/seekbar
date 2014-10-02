@@ -12,7 +12,10 @@ import com.example.seekbartest.Fragment.QuestionTextFragment;
 import com.example.seekbartest.Fragment.SeekbarFragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -34,8 +37,9 @@ public class SeekbarActivity extends FragmentActivity {
 	private String mId;// 現在の回答者ID
 	private LinearLayout mTextLayout;// 設問のフラグメントをのせるためのレイアウト
 	private LinearLayout mSeekbarLayout;// シークバーのフラグメントをのせるためのレイアウト
-	private static int mNow;//縦横をかえられても値が残るように
+	private static int mNow;// 縦横をかえられても値が残るように
 	private ArrayList<String[]> mCSVdata = new ArrayList<String[]>(); // CSVファイルの二次元データ
+	private String mID;
 
 	// CSVファイルの操作関連
 	public final int ROW = 0;
@@ -49,12 +53,16 @@ public class SeekbarActivity extends FragmentActivity {
 		setContentView(R.layout.act_seekbar);// ビューを設定
 
 		Intent intent = getIntent();
-		String clickedBtn = intent.getStringExtra("id");
+		mID = intent.getStringExtra("id");
 
 		init();
+
 	}
 
 	private void init() {
+		// TODO　途中からの情報なのかを判断する
+		mNow = 0;
+
 		mSeekbarLayout = (LinearLayout) mAct.findViewById(R.id.seekbar_layout);
 		mTextLayout = (LinearLayout) mAct.findViewById(R.id.text_layout);
 		try {
@@ -66,9 +74,6 @@ public class SeekbarActivity extends FragmentActivity {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
-		
-		//TODO　途中からの情報なのかを判断する
-		mNow=0;
 	}
 
 	@Override
@@ -80,23 +85,46 @@ public class SeekbarActivity extends FragmentActivity {
 		// 追加や削除などを1つの処理としてまとめるためのトランザクションクラスを取得
 		FragmentTransaction ft = manager.beginTransaction();
 
+		SharedPreferences pref = mAct.getSharedPreferences(mID,
+				Context.MODE_PRIVATE);
 		/* QuestionTextFragmentを設定 */
-		QuestionTextFragment qtf = new QuestionTextFragment();
-		Bundle qtBundle = new Bundle();
-		qtBundle.putString("question", mCSVdata.get(1)[QUESTION]);
-		qtf.setArguments(qtBundle);
-
+		QuestionTextFragment qtf = setQuestionTextFragment();
 		/* SeekbarFragmentを設定 */
-		SeekbarFragment sbf = new SeekbarFragment();
-		Bundle sbBundle = new Bundle();
-		// TODO きちんと値を取得する事
-		sbBundle.putInt("seekbarValue", 0);
-		sbf.setArguments(sbBundle);
+		SeekbarFragment sbf = setSeekbarFragment();
 
 		// Fragment をスタックに追加する
 		ft.add(mTextLayout.getId(), qtf, QUESTION_FRAGMENT);
 		ft.add(mSeekbarLayout.getId(), sbf, SEEKBAR_FRAGMENT);
 		ft.commit();
+	}
+
+	/**
+	 * QuestionTextFragmentを設定
+	 * 
+	 * @return
+	 */
+	private QuestionTextFragment setQuestionTextFragment() {
+		QuestionTextFragment qtf = new QuestionTextFragment();
+		Bundle qtBundle = new Bundle();
+		qtBundle.putString("question", mCSVdata.get(mNow)[QUESTION]);
+		qtf.setArguments(qtBundle);
+		return qtf;
+	}
+
+	/**
+	 * QuestionTextFragmentを設定
+	 * 
+	 * @return
+	 */
+	private SeekbarFragment setSeekbarFragment() {
+		SharedPreferences pref = mAct.getSharedPreferences(mID,
+				Context.MODE_PRIVATE);
+		/* SeekbarFragmentを設定 */
+		SeekbarFragment sbf = new SeekbarFragment();
+		Bundle sbBundle = new Bundle();
+		sbBundle.putInt("seekbarValue", pref.getInt(String.valueOf(mNow), 0));
+		sbf.setArguments(sbBundle);
+		return sbf;
 	}
 
 	/**
@@ -140,52 +168,38 @@ public class SeekbarActivity extends FragmentActivity {
 	 * 次の設問へ移動させる
 	 */
 	public void nextQuestion() {
-		if (mNow != mCSVdata.size()-1) {
-			//再終行以外の場合
-			
+		if (mNow != mCSVdata.size() - 1) {
+			// 再終行以外の場合
+
 			// pageを一つ増やす
 			mNow++;
 
 			/* QuestionTextFragmentを設定 */
-			QuestionTextFragment qtf = new QuestionTextFragment();
-			Bundle qtBundle = new Bundle();
-			qtBundle.putString("question", mCSVdata.get(mNow)[QUESTION]);
-			qtf.setArguments(qtBundle);
+			QuestionTextFragment qtf = setQuestionTextFragment();
 			replaceFragmentToStack(qtf);
 
 			/* SeekbarFragmentを設定 */
-			SeekbarFragment sbf = new SeekbarFragment();
-			Bundle sbBundle = new Bundle();
-			// TODO　戻ってきたときの処理
-			sbBundle.putInt("seekbarValue", 0);
-			sbf.setArguments(sbBundle);
+			SeekbarFragment sbf = setSeekbarFragment();
 			replaceFragmentToStack(sbf);
 		}
 	}
-	
+
 	/**
 	 * 前の設問へ移動させる
-	 */	
+	 */
 	public void beforeQuestion() {
 		if (mNow != 0) {
-			//最初の行以外の場合
-			
+			// 最初の行以外の場合
+
 			// pageを一つ増やす
 			mNow--;
 
 			/* QuestionTextFragmentを設定 */
-			QuestionTextFragment qtf = new QuestionTextFragment();
-			Bundle qtBundle = new Bundle();
-			qtBundle.putString("question", mCSVdata.get(mNow)[QUESTION]);
-			qtf.setArguments(qtBundle);
+			QuestionTextFragment qtf = setQuestionTextFragment();
 			replaceFragmentToStack(qtf);
 
 			/* SeekbarFragmentを設定 */
-			SeekbarFragment sbf = new SeekbarFragment();
-			Bundle sbBundle = new Bundle();
-			// TODO　戻ってきたときの処理
-			sbBundle.putInt("seekbarValue", 0);
-			sbf.setArguments(sbBundle);
+			SeekbarFragment sbf = setSeekbarFragment();
 			replaceFragmentToStack(sbf);
 		}
 	}
@@ -207,5 +221,18 @@ public class SeekbarActivity extends FragmentActivity {
 			String[] array = str.split(",");
 			mCSVdata.add(array);
 		}
+	}
+
+	/**
+	 * seekbarのデータを保存
+	 * 
+	 * @param value　seekbarの値
+	 */
+	public void saveData(int value) {
+		SharedPreferences pref = mAct.getSharedPreferences(mID,
+				Context.MODE_PRIVATE);
+		Editor editor = pref.edit();
+		editor.putInt(String.valueOf(mNow), value);
+		editor.commit();
 	}
 }

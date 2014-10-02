@@ -51,7 +51,7 @@ public class SeekbarFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Log.d(TAG, "on click nextBtn");
-				((SeekbarActivity) getActivity()).nextQuestion();
+				((SeekbarActivity) mAct).nextQuestion();
 			}
 		});
 		
@@ -60,7 +60,7 @@ public class SeekbarFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Log.d(TAG, "on click backBtn");
-				((SeekbarActivity) getActivity()).beforeQuestion();
+				((SeekbarActivity) mAct).beforeQuestion();
 			}
 		});
 		
@@ -81,6 +81,7 @@ public class SeekbarFragment extends Fragment {
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				// ツマミを離したときに呼ばれる
 				Log.d(TAG, "onStopTrackingTouch" + seekBar.getProgress());
+				((SeekbarActivity) mAct).saveData(seekBar.getProgress());
 			}
 		});
 
