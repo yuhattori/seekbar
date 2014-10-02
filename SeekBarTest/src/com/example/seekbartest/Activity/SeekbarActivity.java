@@ -39,7 +39,6 @@ public class SeekbarActivity extends FragmentActivity {
 	private LinearLayout mSeekbarLayout;// シークバーのフラグメントをのせるためのレイアウト
 	private static int mNow;// 縦横をかえられても値が残るように
 	private ArrayList<String[]> mCSVdata = new ArrayList<String[]>(); // CSVファイルの二次元データ
-	private String mID;
 
 	// CSVファイルの操作関連
 	public final int ROW = 0;
@@ -53,7 +52,7 @@ public class SeekbarActivity extends FragmentActivity {
 		setContentView(R.layout.act_seekbar);// ビューを設定
 
 		Intent intent = getIntent();
-		mID = intent.getStringExtra("id");
+		mId = intent.getStringExtra("id");
 
 		init();
 
@@ -85,7 +84,7 @@ public class SeekbarActivity extends FragmentActivity {
 		// 追加や削除などを1つの処理としてまとめるためのトランザクションクラスを取得
 		FragmentTransaction ft = manager.beginTransaction();
 
-		SharedPreferences pref = mAct.getSharedPreferences(mID,
+		SharedPreferences pref = mAct.getSharedPreferences(mId,
 				Context.MODE_PRIVATE);
 		/* QuestionTextFragmentを設定 */
 		QuestionTextFragment qtf = setQuestionTextFragment();
@@ -112,16 +111,17 @@ public class SeekbarActivity extends FragmentActivity {
 	}
 
 	/**
-	 * QuestionTextFragmentを設定
+	 * SeekbarFragmentを設定
 	 * 
 	 * @return
 	 */
 	private SeekbarFragment setSeekbarFragment() {
-		SharedPreferences pref = mAct.getSharedPreferences(mID,
+		SharedPreferences pref = mAct.getSharedPreferences(mId,
 				Context.MODE_PRIVATE);
 		/* SeekbarFragmentを設定 */
 		SeekbarFragment sbf = new SeekbarFragment();
 		Bundle sbBundle = new Bundle();
+		sbBundle.putString("ID", mId);
 		sbBundle.putInt("seekbarValue",
 				pref.getInt("value" + String.valueOf(mNow), 0));
 		sbf.setArguments(sbBundle);
@@ -235,13 +235,15 @@ public class SeekbarActivity extends FragmentActivity {
 	 *            選択までにかかった時間
 	 */
 	public void saveData(int value, int time) {
-		SharedPreferences pref = mAct.getSharedPreferences(mID,
+		SharedPreferences pref = mAct.getSharedPreferences(mId,
 				Context.MODE_PRIVATE);
 		Editor editor = pref.edit();
 		editor.putInt("value" + String.valueOf(mNow), value);
 		editor.putInt("time" + String.valueOf(mNow), time);
+		editor.putInt("length", mNow + 1);// データ数を保存
 		editor.commit();
 
-		Log.d(TAG, "saved value:" + value + "	time:" + time);
+		Log.d(TAG, "saved value:" + value + "	time:" + time + "	length:" + mNow
+				+ 1);
 	}
 }

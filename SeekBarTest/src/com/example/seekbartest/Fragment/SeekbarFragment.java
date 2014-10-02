@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ public class SeekbarFragment extends Fragment {
 	private static final String TAG = SeekbarFragment.class.getSimpleName();
 	private static int MAX_SEEKBAR_VAL = 100;
 	private Activity mAct;
+	private String mId;
 	private View mView;
 	private String mText;
 	private Button mNextBtn;
@@ -29,6 +31,7 @@ public class SeekbarFragment extends Fragment {
 	private Button mBackBtn;
 	private long mStartTime;
 	private long mEndTime;
+//	private boolean mChangeFlag;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,16 +42,22 @@ public class SeekbarFragment extends Fragment {
 
 		// Bundleから情報を取得する
 		mSeekBarValue = getArguments().getInt("seekbarValue");
-		
-		//resultBtnの設定
+		mId = getArguments().getString("ID");
+
+		// resultBtnの設定
 		mResultBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Log.d(TAG, "on click resultBtn");
+				ResultDialogFragment resultDialog = new ResultDialogFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString("ID", mId);
+				resultDialog.setArguments(bundle);
+				resultDialog.show(getFragmentManager(), "ResultDialogFragment");
 			}
 		});
-		
-		//nextBtnの設定
+
+		// nextBtnの設定
 		mNextBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -56,8 +65,8 @@ public class SeekbarFragment extends Fragment {
 				((SeekbarActivity) mAct).nextQuestion();
 			}
 		});
-		
-		//backBtnの設定
+
+		// backBtnの設定
 		mBackBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -65,7 +74,6 @@ public class SeekbarFragment extends Fragment {
 				((SeekbarActivity) mAct).beforeQuestion();
 			}
 		});
-		
 
 		// SeekBarの設定
 		mSeekbar.setProgress(mSeekBarValue);
@@ -82,11 +90,12 @@ public class SeekbarFragment extends Fragment {
 
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				// ツマミを離したときに呼ばれる
+//				mChangeFlag = true;
 				mSeekBarValue = seekBar.getProgress();
-				mEndTime=System.currentTimeMillis();
-				int time = (int) ((mEndTime - mStartTime)/1000);//経過時間を秒で取得
+				mEndTime = System.currentTimeMillis();
+				int time = (int) ((mEndTime - mStartTime) / 1000);// 経過時間を秒で取得
 				Log.d(TAG, "onStopTrackingTouch" + mSeekBarValue);
-				((SeekbarActivity) mAct).saveData(mSeekBarValue,time);
+				((SeekbarActivity) mAct).saveData(mSeekBarValue, time);
 			}
 		});
 
@@ -99,5 +108,14 @@ public class SeekbarFragment extends Fragment {
 		mBackBtn = (Button) mView.findViewById(R.id.seekbar_backbtn);
 		mSeekbar = (SeekBar) mView.findViewById(R.id.seekBar);
 		mStartTime = System.currentTimeMillis();
+//		mChangeFlag=false;
+	}
+	
+	@Override
+	public void onDestroyView(){
+//		if(!mChangeFlag&&mSeekBarValue==0){
+//			
+//			((SeekbarActivity) mAct).saveData(mSeekBarValue, 0);//未回答であるため経過時間は０
+//		}
 	}
 }

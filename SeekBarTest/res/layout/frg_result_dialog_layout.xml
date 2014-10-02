@@ -1,8 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/auther_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="回答者ID" />
+
+    <Button
+        android:id="@+id/result_exitbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="終了" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/result_exitbtn"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/auther_id"
+        android:layout_toLeftOf="@+id/result_exitbtn"
+        android:fadeScrollbars="false" >
+    </ListView>
+
+    <Button
+        android:id="@+id/result_backbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listView"
+        android:layout_toLeftOf="@+id/result_exitbtn"
+        android:text="戻る" />
+
+</RelativeLayout>
