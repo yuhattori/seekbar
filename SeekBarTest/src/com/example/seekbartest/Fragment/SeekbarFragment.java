@@ -26,6 +26,7 @@ public class SeekbarFragment extends Fragment {
 	private Button mResultBtn;
 	private SeekBar mSeekbar;
 	private int mSeekBarValue;
+	private Button mBackBtn;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,14 +38,32 @@ public class SeekbarFragment extends Fragment {
 		// Bundleから情報を取得する
 		mSeekBarValue = getArguments().getInt("seekbarValue");
 		
+		//resultBtnの設定
+		mResultBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.d(TAG, "on click resultBtn");
+			}
+		});
+		
 		//nextBtnの設定
 		mNextBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.d(TAG, "on click startBtn");
+				Log.d(TAG, "on click nextBtn");
 				((SeekbarActivity) getActivity()).nextQuestion();
 			}
 		});
+		
+		//backBtnの設定
+		mBackBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.d(TAG, "on click backBtn");
+				((SeekbarActivity) getActivity()).beforeQuestion();
+			}
+		});
+		
 
 		// SeekBarの設定
 		mSeekbar.setProgress(mSeekBarValue);
@@ -71,6 +90,7 @@ public class SeekbarFragment extends Fragment {
 	private void init() {
 		mNextBtn = (Button) mView.findViewById(R.id.seekbar_nextbtn);
 		mResultBtn = (Button) mView.findViewById(R.id.seekbar_resultbtn);
+		mBackBtn = (Button) mView.findViewById(R.id.seekbar_backbtn);
 		mSeekbar = (SeekBar) mView.findViewById(R.id.seekBar);
 	}
 }

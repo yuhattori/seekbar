@@ -43,12 +43,12 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				Log.d(TAG, "on click startBtn");
 				String id = getTextFromEditText(mIdEditText);
-				if (!id.equals("")) {
+//				if (!id.equals("")) {
 					changeActivity("test");
-				} else {
-					Toast.makeText(mAct, "please edit id", Toast.LENGTH_SHORT)
-							.show();
-				}
+//				} else {
+//					Toast.makeText(mAct, "please edit id", Toast.LENGTH_SHORT)
+//							.show();
+//				}
 			}
 		});
 

@@ -33,8 +33,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:ems="10" >
-
-        <requestFocus />
     </EditText>
 
     <TextView
@@ -42,7 +40,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/editText1"
-        android:text="ID" />
+        android:layout_toLeftOf="@+id/top_edittext"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:text="ID" >
+
+        <requestFocus />
+    </TextView>
 
 </RelativeLayout>

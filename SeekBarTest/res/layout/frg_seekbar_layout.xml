@@ -14,18 +14,26 @@
 
     <Button
         android:id="@+id/seekbar_resultbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:text="結果" />
 
     <Button
         android:id="@+id/seekbar_nextbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:text="次へ" />
+
+    <Button
+        android:id="@+id/seekbar_backbtn"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/seekbar_nextbtn"
+        android:text="戻る" />
 
 </RelativeLayout>
