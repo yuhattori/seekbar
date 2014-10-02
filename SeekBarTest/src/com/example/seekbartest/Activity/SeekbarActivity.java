@@ -122,7 +122,8 @@ public class SeekbarActivity extends FragmentActivity {
 		/* SeekbarFragmentを設定 */
 		SeekbarFragment sbf = new SeekbarFragment();
 		Bundle sbBundle = new Bundle();
-		sbBundle.putInt("seekbarValue", pref.getInt(String.valueOf(mNow), 0));
+		sbBundle.putInt("seekbarValue",
+				pref.getInt("value" + String.valueOf(mNow), 0));
 		sbf.setArguments(sbBundle);
 		return sbf;
 	}
@@ -179,6 +180,9 @@ public class SeekbarActivity extends FragmentActivity {
 			/* SeekbarFragmentを設定 */
 			SeekbarFragment sbf = setSeekbarFragment();
 			replaceFragmentToStack(sbf);
+		} else {
+			// 再終行の場合
+			Log.d(TAG, "last question");
 		}
 	}
 
@@ -197,6 +201,9 @@ public class SeekbarActivity extends FragmentActivity {
 			/* SeekbarFragmentを設定 */
 			SeekbarFragment sbf = setSeekbarFragment();
 			replaceFragmentToStack(sbf);
+		} else {
+			// 最初の行の場合
+			Log.d(TAG, "first question");
 		}
 	}
 
@@ -220,15 +227,21 @@ public class SeekbarActivity extends FragmentActivity {
 	}
 
 	/**
-	 * seekbarのデータを保存
+	 * データを保存する
 	 * 
-	 * @param value　seekbarの値
+	 * @param value
+	 *            seekbarの値
+	 * @param time
+	 *            選択までにかかった時間
 	 */
-	public void saveData(int value) {
+	public void saveData(int value, int time) {
 		SharedPreferences pref = mAct.getSharedPreferences(mID,
 				Context.MODE_PRIVATE);
 		Editor editor = pref.edit();
-		editor.putInt(String.valueOf(mNow), value);
+		editor.putInt("value" + String.valueOf(mNow), value);
+		editor.putInt("time" + String.valueOf(mNow), time);
 		editor.commit();
+
+		Log.d(TAG, "saved value:" + value + "	time:" + time);
 	}
 }

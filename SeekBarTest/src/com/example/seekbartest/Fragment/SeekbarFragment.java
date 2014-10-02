@@ -27,6 +27,8 @@ public class SeekbarFragment extends Fragment {
 	private SeekBar mSeekbar;
 	private int mSeekBarValue;
 	private Button mBackBtn;
+	private long mStartTime;
+	private long mEndTime;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,8 +82,11 @@ public class SeekbarFragment extends Fragment {
 
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				// ツマミを離したときに呼ばれる
-				Log.d(TAG, "onStopTrackingTouch" + seekBar.getProgress());
-				((SeekbarActivity) mAct).saveData(seekBar.getProgress());
+				mSeekBarValue = seekBar.getProgress();
+				mEndTime=System.currentTimeMillis();
+				int time = (int) ((mEndTime - mStartTime)/1000);//経過時間を秒で取得
+				Log.d(TAG, "onStopTrackingTouch" + mSeekBarValue);
+				((SeekbarActivity) mAct).saveData(mSeekBarValue,time);
 			}
 		});
 
@@ -93,5 +98,6 @@ public class SeekbarFragment extends Fragment {
 		mResultBtn = (Button) mView.findViewById(R.id.seekbar_resultbtn);
 		mBackBtn = (Button) mView.findViewById(R.id.seekbar_backbtn);
 		mSeekbar = (SeekBar) mView.findViewById(R.id.seekBar);
+		mStartTime = System.currentTimeMillis();
 	}
 }
